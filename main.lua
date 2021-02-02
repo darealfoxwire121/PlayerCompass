@@ -9,9 +9,11 @@
     \|__|     \|_______|\|__|\|__|\___/ /        \|_______|\|__|\|__|        \|_______|\|_______|\|__|     \|__|\|__|     \|__|\|__|\_________\\_________\
                                  \|___|/                                                                                           \|_________\|_________|
 
-    Made by foxwire121#5888(368756571481702401), with motivation from Yes#0007(579306070040641546)                                                                                                                                                 
+    Made by foxwire121#5888(368756571481702401), with motivation from Yes#007(579306070040641546)                                                                                                                                                 
 --]]
 
+--[[SETTING]]--
+local TeamCheck = true
 
 --[[GUI PARTS]]--
 
@@ -260,24 +262,48 @@ end
 function GetClosest()
     local s,e = pcall(function()
         for i,v in pairs(game.Players:GetPlayers()) do
+            --add player specific checks here--
             if v.Name ~= game.Players.LocalPlayer.Name then
-                --print(i)
-                realmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
-                --print(realmag)
-                if i == 2 then
-                    lowestMag = realmag
-                    _G.closestPlayer = v
-                end
-                if i > 2 and realmag < lowestMag then
+                --team check enabled or not
+                if TeamCheck and v.Team then
+                    if v.Team ~= game.Players.LocalPlayer.Team then
+                        --print(i)
+                        realmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
+                        --print(realmag)
+                        if i == 2 then
+                            lowestMag = realmag
+                            _G.closestPlayer = v
+                        end
+                        if i > 2 and realmag < lowestMag then
+                            --print(realmag)
+                            lowestMag = realmag
+                            _G.closestPlayer = v
+                        end
+                    end
+                else
+                    --print(i)
+                    realmag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Character.HumanoidRootPart.Position).Magnitude
                     --print(realmag)
-                    lowestMag = realmag
-                    _G.closestPlayer = v
+                    if i == 2 then
+                        lowestMag = realmag
+                        _G.closestPlayer = v
+                    end
+                    if i > 2 and realmag < lowestMag then
+                        --print(realmag)
+                        lowestMag = realmag
+                        _G.closestPlayer = v
+                    end
                 end
             end
         end
         --print('lowest mag: '..lowestMag)
         --print('Closest Player:'.._G.closestPlayer.Name)
-        CalculateDegrees(game.Players.LocalPlayer.Character.HumanoidRootPart, _G.closestPlayer.Character.HumanoidRootPart)
+        --check if player isnt nil
+        if _G.closestPlayer then
+            CalculateDegrees(game.Players.LocalPlayer.Character.HumanoidRootPart, _G.closestPlayer.Character.HumanoidRootPart)
+        else
+            return false
+        end
     end)
     if not s then print(e) end
 end
