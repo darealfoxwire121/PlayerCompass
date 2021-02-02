@@ -12,7 +12,7 @@
     Made by foxwire121#5888(368756571481702401), with motivation from Yes#007(579306070040641546)                                                                                                                                                 
 --]]
 
---[[SETTING]]--
+--[[SETTINGS]]--
 local TeamCheck = true
 
 --[[GUI PARTS]]--
