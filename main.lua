@@ -12,190 +12,213 @@
     Made by foxwire121#5888(368756571481702401), with motivation from Yes#007(579306070040641546)                                                                                                                                                 
 --]]
 
---[[SETTINGS]]--
+--[[SETTING]]--
 local TeamCheck = true
+local debugMode = false --prints errors into ouput, may flood it
 
 --[[GUI PARTS]]--
 
-local Main = Instance.new("ScreenGui")
-local Main_2 = Instance.new("Frame")
-local Frame = Instance.new("Frame")
-local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-local Frame_2 = Instance.new("Frame")
-local UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
-local hinge = Instance.new("Frame")
-local line = Instance.new("Frame")
-local UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint")
-local UIAspectRatioConstraint_4 = Instance.new("UIAspectRatioConstraint")
-local TextLabel = Instance.new("TextLabel")
-local UIAspectRatioConstraint_5 = Instance.new("UIAspectRatioConstraint")
-local TextLabel_2 = Instance.new("TextLabel")
-local UIAspectRatioConstraint_6 = Instance.new("UIAspectRatioConstraint")
-local TextLabel_3 = Instance.new("TextLabel")
-local UIAspectRatioConstraint_7 = Instance.new("UIAspectRatioConstraint")
-local TextLabel_4 = Instance.new("TextLabel")
-local UIAspectRatioConstraint_8 = Instance.new("UIAspectRatioConstraint")
-local UIAspectRatioConstraint_9 = Instance.new("UIAspectRatioConstraint")
+local Main
+local Main_2
+local Frame
+local Frame_2
+local UIAspectRatioConstraint
+local hinge
+local line
+local UIAspectRatioConstraint_2
+local UIAspectRatioConstraint_3
+local UIAspectRatioConstraint_4
+local UIAspectRatioConstraint_5
+local UIAspectRatioConstraint_6
+local UIAspectRatioConstraint_7
+local UIAspectRatioConstraint_8
+local UIAspectRatioConstraint_9
+local TextLabel
+local TextLabel_2
+local TextLabel_3
+local TextLabel_4
 
-Main.Name = "Main"
-Main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-Main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+function InsertGuis()
+    Main = Instance.new("ScreenGui")
+    Main_2 = Instance.new("Frame")
+    Frame = Instance.new("Frame")
+    UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+    Frame_2 = Instance.new("Frame")
+    UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
+    hinge = Instance.new("Frame")
+    line = Instance.new("Frame")
+    UIAspectRatioConstraint_3 = Instance.new("UIAspectRatioConstraint")
+    UIAspectRatioConstraint_4 = Instance.new("UIAspectRatioConstraint")
+    TextLabel = Instance.new("TextLabel")
+    UIAspectRatioConstraint_5 = Instance.new("UIAspectRatioConstraint")
+    TextLabel_2 = Instance.new("TextLabel")
+    UIAspectRatioConstraint_6 = Instance.new("UIAspectRatioConstraint")
+    TextLabel_3 = Instance.new("TextLabel")
+    UIAspectRatioConstraint_7 = Instance.new("UIAspectRatioConstraint")
+    TextLabel_4 = Instance.new("TextLabel")
+    UIAspectRatioConstraint_8 = Instance.new("UIAspectRatioConstraint")
+    UIAspectRatioConstraint_9 = Instance.new("UIAspectRatioConstraint")
 
-Main_2.Name = "Main"
-Main_2.Parent = Main
-Main_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Main_2.BackgroundTransparency = 1
-Main_2.Position = UDim2.new(0.0304449722, 0, 0.0640732348, 0)
-Main_2.Size = UDim2.new(0.151053861, 0, 0.292906165, 0)
-Main_2.ZIndex = 0
+    Main.Name = "Main"
+    Main.Parent = game:GetService("CoreGui")
+    Main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-Frame.Parent = Main_2
-Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame.BorderSizePixel = 0
-Frame.Position = UDim2.new(0.496124029, 0, 0.1953125, 0)
-Frame.Size = UDim2.new(0.00775193796, 0, 0.625, 0)
+    Main_2.Name = "Main"
+    Main_2.Parent = Main
+    Main_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Main_2.BackgroundTransparency = 1
+    Main_2.Position = UDim2.new(0.0304449722, 0, 0.0640732348, 0)
+    Main_2.Size = UDim2.new(0.151053861, 0, 0.292906165, 0)
+    Main_2.ZIndex = 0
 
-UIAspectRatioConstraint.Parent = Frame
-UIAspectRatioConstraint.AspectRatio = 0.013
+    Frame.Parent = Main_2
+    Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Frame.BorderSizePixel = 0
+    Frame.Position = UDim2.new(0.496124029, 0, 0.1953125, 0)
+    Frame.Size = UDim2.new(0.00775193796, 0, 0.625, 0)
 
-Frame_2.Parent = Main_2
-Frame_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame_2.BorderSizePixel = 0
-Frame_2.Position = UDim2.new(0.496124029, 0, 0.1953125, 0)
-Frame_2.Rotation = 90.000
-Frame_2.Size = UDim2.new(0.00775193796, 0, 0.625, 0)
+    UIAspectRatioConstraint.Parent = Frame
+    UIAspectRatioConstraint.AspectRatio = 0.013
 
-UIAspectRatioConstraint_2.Parent = Frame_2
-UIAspectRatioConstraint_2.AspectRatio = 0.013
+    Frame_2.Parent = Main_2
+    Frame_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Frame_2.BorderSizePixel = 0
+    Frame_2.Position = UDim2.new(0.496124029, 0, 0.1953125, 0)
+    Frame_2.Rotation = 90.000
+    Frame_2.Size = UDim2.new(0.00775193796, 0, 0.625, 0)
 
-hinge.Name = "hinge"
-hinge.Parent = Main_2
-hinge.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-hinge.BackgroundTransparency = 1.000
-hinge.BorderSizePixel = 0
-hinge.Position = UDim2.new(0.496124029, 0, 0.4609375, 0)
-hinge.Size = UDim2.new(0.00775193796, 0, 0.078125, 0)
-hinge.ZIndex = 5
+    UIAspectRatioConstraint_2.Parent = Frame_2
+    UIAspectRatioConstraint_2.AspectRatio = 0.013
 
-line.Name = "line"
-line.Parent = hinge
-line.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-line.BorderSizePixel = 0
-line.Position = UDim2.new(0, 0, -3.5999999, 0)
-line.Size = UDim2.new(2, 0, 4.00000048, 0)
+    hinge.Name = "hinge"
+    hinge.Parent = Main_2
+    hinge.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    hinge.BackgroundTransparency = 1.000
+    hinge.BorderSizePixel = 0
+    hinge.Position = UDim2.new(0.496124029, 0, 0.4609375, 0)
+    hinge.Size = UDim2.new(0.00775193796, 0, 0.078125, 0)
+    hinge.ZIndex = 5
 
-UIAspectRatioConstraint_3.Parent = line
-UIAspectRatioConstraint_3.AspectRatio = 0.050
+    line.Name = "line"
+    line.Parent = hinge
+    line.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    line.BorderSizePixel = 0
+    line.Position = UDim2.new(0, 0, -3.5999999, 0)
+    line.Size = UDim2.new(2, 0, 4.00000048, 0)
 
-UIAspectRatioConstraint_4.Parent = hinge
-UIAspectRatioConstraint_4.AspectRatio = 0.100
+    UIAspectRatioConstraint_3.Parent = line
+    UIAspectRatioConstraint_3.AspectRatio = 0.050
 
-TextLabel.Parent = Main_2
-TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel.BackgroundTransparency = 1.000
-TextLabel.BorderSizePixel = 0
-TextLabel.Position = UDim2.new(0.767441869, 0, 0.40625, 0)
-TextLabel.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
-TextLabel.Font = Enum.Font.SourceSans
-TextLabel.Text = "E"
-TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel.TextScaled = true
-TextLabel.TextSize = 14.000
-TextLabel.TextWrapped = true
+    UIAspectRatioConstraint_4.Parent = hinge
+    UIAspectRatioConstraint_4.AspectRatio = 0.100
 
-UIAspectRatioConstraint_5.Parent = TextLabel
-UIAspectRatioConstraint_5.AspectRatio = 1.200
+    TextLabel.Parent = Main_2
+    TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.BackgroundTransparency = 1.000
+    TextLabel.BorderSizePixel = 0
+    TextLabel.Position = UDim2.new(0.767441869, 0, 0.40625, 0)
+    TextLabel.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
+    TextLabel.Font = Enum.Font.SourceSans
+    TextLabel.Text = "E"
+    TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+    TextLabel.TextScaled = true
+    TextLabel.TextSize = 14.000
+    TextLabel.TextWrapped = true
 
-TextLabel_2.Parent = Main_2
-TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel_2.BackgroundTransparency = 1.000
-TextLabel_2.BorderSizePixel = 0
-TextLabel_2.Position = UDim2.new(0, 0, 0.40625, 0)
-TextLabel_2.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
-TextLabel_2.Font = Enum.Font.SourceSans
-TextLabel_2.Text = "W"
-TextLabel_2.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel_2.TextScaled = true
-TextLabel_2.TextSize = 14.000
-TextLabel_2.TextWrapped = true
+    UIAspectRatioConstraint_5.Parent = TextLabel
+    UIAspectRatioConstraint_5.AspectRatio = 1.200
 
-UIAspectRatioConstraint_6.Parent = TextLabel_2
-UIAspectRatioConstraint_6.AspectRatio = 1.200
+    TextLabel_2.Parent = Main_2
+    TextLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel_2.BackgroundTransparency = 1.000
+    TextLabel_2.BorderSizePixel = 0
+    TextLabel_2.Position = UDim2.new(0, 0, 0.40625, 0)
+    TextLabel_2.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
+    TextLabel_2.Font = Enum.Font.SourceSans
+    TextLabel_2.Text = "W"
+    TextLabel_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+    TextLabel_2.TextScaled = true
+    TextLabel_2.TextSize = 14.000
+    TextLabel_2.TextWrapped = true
 
-TextLabel_3.Parent = Main_2
-TextLabel_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel_3.BackgroundTransparency = 1.000
-TextLabel_3.BorderSizePixel = 0
-TextLabel_3.Position = UDim2.new(0.395348847, 0, 0.8125, 0)
-TextLabel_3.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
-TextLabel_3.Font = Enum.Font.SourceSans
-TextLabel_3.Text = "S"
-TextLabel_3.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel_3.TextScaled = true
-TextLabel_3.TextSize = 14.000
-TextLabel_3.TextWrapped = true
+    UIAspectRatioConstraint_6.Parent = TextLabel_2
+    UIAspectRatioConstraint_6.AspectRatio = 1.200
 
-UIAspectRatioConstraint_7.Parent = TextLabel_3
-UIAspectRatioConstraint_7.AspectRatio = 1.200
+    TextLabel_3.Parent = Main_2
+    TextLabel_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel_3.BackgroundTransparency = 1.000
+    TextLabel_3.BorderSizePixel = 0
+    TextLabel_3.Position = UDim2.new(0.395348847, 0, 0.8125, 0)
+    TextLabel_3.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
+    TextLabel_3.Font = Enum.Font.SourceSans
+    TextLabel_3.Text = "S"
+    TextLabel_3.TextColor3 = Color3.fromRGB(0, 0, 0)
+    TextLabel_3.TextScaled = true
+    TextLabel_3.TextSize = 14.000
+    TextLabel_3.TextWrapped = true
 
-TextLabel_4.Parent = Main_2
-TextLabel_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextLabel_4.BackgroundTransparency = 1.000
-TextLabel_4.BorderSizePixel = 0
-TextLabel_4.Position = UDim2.new(0.395348847, 0, 0, 0)
-TextLabel_4.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
-TextLabel_4.Font = Enum.Font.SourceSans
-TextLabel_4.Text = "N"
-TextLabel_4.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextLabel_4.TextScaled = true
-TextLabel_4.TextSize = 14.000
-TextLabel_4.TextWrapped = true
+    UIAspectRatioConstraint_7.Parent = TextLabel_3
+    UIAspectRatioConstraint_7.AspectRatio = 1.200
 
-UIAspectRatioConstraint_8.Parent = TextLabel_4
-UIAspectRatioConstraint_8.AspectRatio = 1.200
+    TextLabel_4.Parent = Main_2
+    TextLabel_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel_4.BackgroundTransparency = 1.000
+    TextLabel_4.BorderSizePixel = 0
+    TextLabel_4.Position = UDim2.new(0.395348847, 0, 0, 0)
+    TextLabel_4.Size = UDim2.new(0.232558146, 0, 0.1953125, 0)
+    TextLabel_4.Font = Enum.Font.SourceSans
+    TextLabel_4.Text = "N"
+    TextLabel_4.TextColor3 = Color3.fromRGB(0, 0, 0)
+    TextLabel_4.TextScaled = true
+    TextLabel_4.TextSize = 14.000
+    TextLabel_4.TextWrapped = true
 
-UIAspectRatioConstraint_9.Parent = Main_2
-UIAspectRatioConstraint_9.AspectRatio = 1.008
+    UIAspectRatioConstraint_8.Parent = TextLabel_4
+    UIAspectRatioConstraint_8.AspectRatio = 1.200
 
-local UserInputService = game:GetService("UserInputService")
+    UIAspectRatioConstraint_9.Parent = Main_2
+    UIAspectRatioConstraint_9.AspectRatio = 1.008
 
-local gui = Main_2
+    local UserInputService = game:GetService("UserInputService")
 
-local dragging
-local dragInput
-local dragStart
-local startPos
+    local gui = Main_2
 
-local function update(input)
-	local delta = input.Position - dragStart
-	gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    local dragging
+    local dragInput
+    local dragStart
+    local startPos
+
+    local function update(input)
+        local delta = input.Position - dragStart
+        gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+
+    gui.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = gui.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    gui.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            update(input)
+        end
+    end)
 end
-
-gui.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		dragging = true
-		dragStart = input.Position
-		startPos = gui.Position
-
-		input.Changed:Connect(function()
-			if input.UserInputState == Enum.UserInputState.End then
-				dragging = false
-			end
-		end)
-	end
-end)
-
-gui.InputChanged:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-		dragInput = input
-	end
-end)
-
-UserInputService.InputChanged:Connect(function(input)
-	if input == dragInput and dragging then
-		update(input)
-	end
-end)
 
 --[[MAIN SCRIPT]]--
 _G.GetClosestPlayer = true
@@ -305,11 +328,35 @@ function GetClosest()
             return false
         end
     end)
-    if not s then print(e) end
+    if not s and debugMode == true then
+        print(e)
+    end
 end
 
-repeat
-    wait(.1)
-    GetClosest()
-    --_G.GetClosestPlayer = false
-until _G.GetClosestPlayer ~= true
+function Initialize()
+    InsertGuis()
+    repeat
+        wait(.1)
+        GetClosest()
+        --_G.GetClosestPlayer = false
+    until _G.GetClosestPlayer ~= true
+end
+
+function CheckHealth()
+    spawn(function()
+        pcall(function()
+            while wait() do
+                if (game.Players.LocalPlayer.Character.Humanoid.Health <= 0) or (game.Players.LocalPlayer.Character.HumanoidRootPart == nil) then
+                    game:GetService("CoreGui").Main:Destroy()
+                    _G.getClosestPlayer = false
+                    Initialize()
+                end
+            end
+        end)
+    end)
+end
+
+--[[START]]--
+
+Initialize()
+CheckHealth()
