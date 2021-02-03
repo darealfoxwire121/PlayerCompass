@@ -9,11 +9,11 @@
     \|__|     \|_______|\|__|\|__|\___/ /        \|_______|\|__|\|__|        \|_______|\|_______|\|__|     \|__|\|__|     \|__|\|__|\_________\\_________\
                                  \|___|/                                                                                           \|_________\|_________|
 
-    Made by foxwire121#5888(368756571481702401), with motivation from Yes#007(579306070040641546)                                                                                                                                                 
+    Made by foxwire121#5888(368756571481702401), with motivation from Yes#0007(579306070040641546)                                                                                                                                                 
 --]]
 
---[[SETTING]]--
-local TeamCheck = true
+--[[SETTINGS]]--
+local TeamCheck = false
 local debugMode = false --prints errors into ouput, may flood it
 
 --[[GUI PARTS]]--
@@ -37,8 +37,22 @@ local TextLabel
 local TextLabel_2
 local TextLabel_3
 local TextLabel_4
+local savedHue
+local SavedMapBigness
+local DivideHueValueBy
+
+function SendLocalMessage(Message,Duration)
+    game.StarterGui:SetCore("SendNotification",{
+        Title = "Player Compass",
+        Text = tostring(Message),
+        Duration = Duration
+    })
+end
 
 function InsertGuis()
+    SendLocalMessage('Waiting for the game to load',4)
+    repeat wait() until game:IsLoaded()
+    SendLocalMessage('Loading complete!',4)
     Main = Instance.new("ScreenGui")
     Main_2 = Instance.new("Frame")
     Frame = Instance.new("Frame")
@@ -272,6 +286,10 @@ function CalculateDegrees(Point1,Point2)
         CurrentDirection = _G.LastKnownDirection[#_G.LastKnownDirection+1]
     end
     hinge.Rotation = Diff+180-90
+    local GetValue = 1-lowestMag/250
+    if GetValue < 0 then GetValue = 0.004 end
+    if GetValue >= 1 then GetValue = 0.996 end
+    line.BackgroundColor3 = Color3.fromHSV(savedHue/1000, 1, GetValue)
     --[[ local tbl_main =
     {
         "Closest Player: ".._G.closestPlayer.Name..". Studs Away From Player: "..lowestMag..". Player Direction: "..CurrentDirection,
@@ -334,6 +352,47 @@ function GetClosest()
 end
 
 function Initialize()
+    --check exploit support for FileSaving API
+    if readfile and writefile then
+        local success, error = pcall(function()
+            local SavedData = HttpServ:JSONDecode(readfile("PlayerCompassSettings.txt"))
+            print(#savedData)
+            SavedMapBigness = SavedData.mapType
+            savedHue = SavedData.savedHue
+        end)
+        if not success then
+            if string.find(error,"found") then
+                SendLocalMessage("File not found",4)
+                --warn("File error")
+                --print("Writing")
+                local HttpServ = game:GetService("HttpService")
+                local UnsavedData = {
+                    savedHue = 236;
+                    mapType = "small map"
+                }
+                writefile("PlayerCompassSettings.txt", HttpServ:JSONEncode(UnsavedData))
+                wait(5)
+                --wait 5 secs and retry searching for newly made file
+                local SavedData = HttpServ:JSONDecode(readfile("PlayerCompassSettings.txt"))
+                print(#savedData)
+                SavedMapBigness = SavedData.mapType
+                savedHue = SavedData.savedHue
+            end
+        end
+        --print(savedHue/1000)
+        --print(SavedMapBigness)
+        if SavedMapBigness == "small Map" then
+            DivideHueValueBy = 70
+        elseif SavedMapBigness == "medium Map" then
+            DivideHueValueBy = 250
+        elseif SavedMapBigness == "large Map" then
+            DivideHueValueBy = 500
+        end
+    else
+        warn("Exploit not supported!")
+    end
+    --get all the saved files using exploit API's
+
     InsertGuis()
     repeat
         wait(.1)
