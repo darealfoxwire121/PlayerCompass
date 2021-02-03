@@ -59,7 +59,7 @@ function InsertGuis()
     UIAspectRatioConstraint_8 = Instance.new("UIAspectRatioConstraint")
     UIAspectRatioConstraint_9 = Instance.new("UIAspectRatioConstraint")
 
-    Main.Name = tostring(math.pi+math.random(1,100))
+    Main.Name = game:GetService("HttpService"):GenerateGUID(false)
     Main.Parent = game:GetService("CoreGui")['RobloxLoadingGui']
     Main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
