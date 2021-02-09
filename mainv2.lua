@@ -22,13 +22,13 @@ local IdealMouseOffsetY = -45 -- same with this one
 game:GetService("UserInputService").InputBegan:Connect(function(input,nothing)
     if nothing then
         if input.KeyCode == Enum.KeyCode.KeypadPlus then
-            IdealMouseOffsetY = IdealMouseOffsetY - 2
+            IdealMouseOffsetY = IdealMouseOffsetY - 1
         elseif input.KeyCode == Enum.KeyCode.KeypadMinus then
-            IdealMouseOffsetY = IdealMouseOffsetY + 2
+            IdealMouseOffsetY = IdealMouseOffsetY + 1
         elseif input.KeyCode == Enum.KeyCode.Minus then
-            IdealMouseOffsetX = IdealMouseOffsetX - 2
+            IdealMouseOffsetX = IdealMouseOffsetX - 1
         elseif input.KeyCode == Enum.KeyCode.Underscore then
-            IdealMouseOffsetX = IdealMouseOffsetX + 2
+            IdealMouseOffsetX = IdealMouseOffsetX + 1
         end
     end
 end)
@@ -55,16 +55,16 @@ end
 function ChangeGuiColor(gui,color)
     if color == 'red' then
         local TS = game:GetService("TweenService")
-        TS:Create(gui,TweenInfo.new(0.1,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,0,0)}):Play()
+        TS:Create(gui,TweenInfo.new(0.5,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,0,0)}):Play()
     elseif color == 'white' then
         local TS = game:GetService("TweenService")
-        TS:Create(gui,TweenInfo.new(0.1,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,255,255)}):Play()
+        TS:Create(gui,TweenInfo.new(0.5,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,255,255)}):Play()
     end
 end
 
 function RotateGui(gui,Orientation)
     local TS = game:GetService("TweenService")
-    TS:Create(gui,TweenInfo.new(0.1,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Rotation = Orientation}):Play()
+    TS:Create(gui,TweenInfo.new(0.2,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{Rotation = Orientation}):Play()
 end
 
 function ChangeFocusPlayerWallcheck(P1,P2)
@@ -112,41 +112,43 @@ function GetUUID()
 end
 
 function InsertGuis(ThemeNumber)
-    SendLocalMessage('Waiting for the game to load')
-    repeat
-        wait()
-    until game:IsLoaded()
-    SendLocalMessage('Loaded')
-    if ThemeNumber == 1 then
-        --Insert gui here
-        Main = Instance.new("ScreenGui")
-        Main2 = Instance.new("Frame")
-        local UICorner = Instance.new("UICorner")
-        UIGradient = Instance.new("UIGradient")
-        local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-        
-        --Properties:
-        
-        Main.Name = GetUUID()
-        Main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-        Main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-        
-        Main2.Name = GetUUID()
-        Main2.Parent = Main
-        Main2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        Main2.Position = UDim2.new(0, 377, 0, 168)
-        Main2.Size = UDim2.new(0, 100, 0, 100)
-        
-        UICorner.CornerRadius = UDim.new(0, 50)
-        UICorner.Parent = Main2
-        
-        UIGradient.Rotation = 90
-        UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.08, 0.82), NumberSequenceKeypoint.new(0.14, 0.99), NumberSequenceKeypoint.new(0.19, 1.00), NumberSequenceKeypoint.new(0.43, 1.00), NumberSequenceKeypoint.new(0.67, 1.00), NumberSequenceKeypoint.new(0.99, 1.00), NumberSequenceKeypoint.new(1.00, 1.00), NumberSequenceKeypoint.new(1.00, 1.00), NumberSequenceKeypoint.new(1.00, 1.00), NumberSequenceKeypoint.new(1.00, 1.00)}
-        UIGradient.Parent = Main2
-        
-        UIAspectRatioConstraint.Parent = Main2
-        -----------------
-    end
+    pcall(function()
+        SendLocalMessage('Waiting for the game to load')
+        repeat
+            wait()
+        until game:IsLoaded()
+        SendLocalMessage('Loaded')
+        if ThemeNumber == 1 then
+            --Insert gui here
+            Main = Instance.new("ScreenGui")
+            Main2 = Instance.new("Frame")
+            local UICorner = Instance.new("UICorner")
+            UIGradient = Instance.new("UIGradient")
+            local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+            
+            --Properties:
+            
+            Main.Name = GetUUID()
+            Main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+            Main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+            
+            Main2.Name = GetUUID()
+            Main2.Parent = Main
+            Main2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Main2.Position = UDim2.new(0, 377, 0, 168)
+            Main2.Size = UDim2.new(0, 100, 0, 100)
+            
+            UICorner.CornerRadius = UDim.new(0, 50)
+            UICorner.Parent = Main2
+            
+            UIGradient.Rotation = 90
+            UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.08, 0.82), NumberSequenceKeypoint.new(0.14, 0.99), NumberSequenceKeypoint.new(0.19, 1.00), NumberSequenceKeypoint.new(0.43, 1.00), NumberSequenceKeypoint.new(0.67, 1.00), NumberSequenceKeypoint.new(0.99, 1.00), NumberSequenceKeypoint.new(1.00, 1.00), NumberSequenceKeypoint.new(1.00, 1.00), NumberSequenceKeypoint.new(1.00, 1.00), NumberSequenceKeypoint.new(1.00, 1.00)}
+            UIGradient.Parent = Main2
+            
+            UIAspectRatioConstraint.Parent = Main2
+            -----------------
+        end
+    end)
 end
 
 --[[MAIN SCRIPT]]--
@@ -160,7 +162,7 @@ local realmag
 local CurrentDirection = nil
 
 function CalculateDegrees(Point1,Point2)
-    local s,e = pcall(function()
+    pcall(function()
         --point1 is localplayer
         --different in y over difference in x, in roblox: x1 - x2 / z1 - z2. then use tan to get the degrees from the angle
         --[[ local slope = (Point1.Position.Z - Point2.Position.Z)/(Point1.Position.X - Point2.Position.X)
@@ -270,53 +272,22 @@ function GetClosest()
             return false
         end
     end)
-    if not s then
-        --print(e)
-        return
-    end
 end
 
 function Initialize()
-    InsertGuis(1)
-    repeat
-        wait()
-        GetClosest()
-        TransformMainGuiPosition()
-        --_G.GetFocusedPlayer = false --default: comment this line, used for debugging the function: GetClosest()
-    until _G.GetFocusedPlayer ~= true
-end
-
-function CheckHealth()
-    spawn(function()
-        pcall(function()
-            while wait() do
-                game.Players.LocalPlayer.Humanoid.Died:Connect(function()
-                    --rconsoleprint("Player died")
-                    --delete gui when character resets
-                    game:GetService("CoreGui")["RobloxLoadingGui"]:FindFirstChildWhichIsA("ScreenGui"):Destroy()
-                    _G.getFocusedPlayer = false
-                    --wait for player to respawn
-                    repeat wait() until game.Players.LocalPlayer.Character ~= nil
-                    wait(1)
-                    Initialize()
-                end)
-                if (game.Players.LocalPlayer.Character.Humanoid.Health <= 0) or (game.Players.LocalPlayer.Character.HumanoidRootPart == nil) or (game.Players.LocalPlayer.Character == nil) then
-                   --rconsoleprint("Player died")
-                   --delete gui when character resets
-                   game:GetService("CoreGui")["RobloxLoadingGui"]:FindFirstChildWhichIsA("ScreenGui"):Destroy()
-                   _G.getFocusedPlayer = false
-                   --wait for player to respawn
-                    repeat wait() until game.Players.LocalPlayer.Character ~= nil
-                    wait(1)
-                    Initialize()
-                end
-            end
-        end)
+    pcall(function()
+        InsertGuis(1)
+        repeat
+            wait()
+            GetClosest()
+            TransformMainGuiPosition()
+            --_G.GetFocusedPlayer = false --default: comment this line, used for debugging the function: GetClosest()
+        until _G.GetFocusedPlayer ~= true
     end)
 end
 
+
 --[[START]]--
 
-CheckHealth()
 Initialize()
-
+    
