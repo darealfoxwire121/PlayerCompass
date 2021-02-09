@@ -1,5 +1,4 @@
 
-
 --[[
     ______                           __  ____  ______ 
    / ____/___  ___  ____ ___  __  __/ / / / / / / __ \
@@ -11,7 +10,7 @@
 --]]
 
 --TO DO--==========
---make the script work
+--check ray collision
 
 local Main
 local Main2
@@ -20,7 +19,7 @@ local IdealMouseOffsetX = -45 --keep it, should work on all types of screens, th
 local IdealMouseOffsetY = -45 -- same with this one
 local openPlayers = {}
 local dMode = false
-local ExtraDelay = 5
+local ExtraDelay = 0 --Please ignore this
 
 function rPrint(Message)
     if dMode then
@@ -52,7 +51,7 @@ end
 
 function CheckRayCollision(Rayresult,P1,P2)
     if Rayresult then
-        rconsoleprint("Ray hit target: "..Rayresult.Instance)
+        rPrint("Ray hit target: "..Rayresult.Instance)
     else
         return true
     end
@@ -136,10 +135,12 @@ end
 
 function InsertGuis(ThemeNumber)
     SendLocalMessage('Waiting for the game to load')
-    for i,v in pairs(game.Workspace:GetDescendants()) do
-        if v.Name == 'Head' and v:IsA('BasePart') then
-            SendLocalMessage('This game is supported!')
-            break
+    if dMode then
+        for i,v in pairs(game.Workspace:GetDescendants()) do
+            if v.Name == 'Head' and v:IsA('BasePart') then
+                SendLocalMessage('This game is supported!')
+                break
+            end
         end
     end
     repeat
@@ -189,7 +190,6 @@ _G.LastKnownDirection = {}
 local realmag
 local CurrentDirection = nil ]]
 
----Please remove this {Replacement is the new wallcheck version of it} EDIT: It is already removed don't worry
 function GetClosest()
     local s,e = pcall(function()
         if CheckEntriesTable(openPlayers) > 0 then
@@ -209,7 +209,7 @@ function GetClosest()
                 --set gui invisible
                 AnimateTransparency(Main2,1)
             else
-                rconsoleprint('Name of current target: '.._G.FocusedPlayer.Name)
+                rPrint('Name of current target: '.._G.FocusedPlayer.Name)
                 --set gui visible
                 AnimateTransparency(Main2,0)
             end
@@ -261,9 +261,12 @@ function CheckHealth()
                         rPrint('Failed to delete gui, retrying...')
                         game:GetService("CoreGui")["RobloxLoadingGui"]:FindFirstChildWhichIsA("ScreenGui"):Destroy()
                    end
-                   --repeat wait() until game.Players.LocalPlayer.Character ~= nil
-                    --wait(1)
-                    --Initialize()
+                   repeat wait() until game.Players.LocalPlayer.Character ~= nil
+                   if dMode == true then
+                       rPrint('LocalPlayer respawned')
+                   end
+                   wait(1)
+                   Initialize()
                 end
             end
         end)
