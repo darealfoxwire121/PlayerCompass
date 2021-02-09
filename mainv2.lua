@@ -18,6 +18,21 @@ local UIGradient
 local IdealMouseOffsetX = -45 --keep it, should work on all types of screens, the games offest may differ though
 local IdealMouseOffsetY = -45 -- same with this one
 
+--change ideal mouse offsets in-game
+game:GetService("UserInputService").InputBegan:Connect(function(input,nothing)
+    if nothing then
+        if input.KeyCode == Enum.KeyCode.KeypadPlus then
+            IdealMouseOffsetY = IdealMouseOffsetY - 2
+        elseif input.KeyCode == Enum.KeyCode.KeypadMinus then
+            IdealMouseOffsetY = IdealMouseOffsetY + 2
+        elseif input.KeyCode == Enum.KeyCode.Minus then
+            IdealMouseOffsetX = IdealMouseOffsetX - 2
+        elseif input.KeyCode == Enum.KeyCode.Underscore then
+            IdealMouseOffsetX = IdealMouseOffsetX + 2
+        end
+    end
+end)
+
 function InsertRays(Point1,Point2)
     local raycastResult = workspace:Raycast(Point1.Position, Point2.Position)
     return raycastResult
