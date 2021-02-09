@@ -19,6 +19,7 @@ local IdealMouseOffsetX = -45 --keep it, should work on all types of screens, th
 local IdealMouseOffsetY = -45 -- same with this one
 local openPlayers = {}
 local dMode = false
+_G.Message = false
 local ExtraDelay = 0 --Please ignore this
 
 function rPrint(Message)
@@ -31,13 +32,13 @@ end
 game:GetService("UserInputService").InputBegan:Connect(function(input,nothing)
     if nothing then
         if input.KeyCode == Enum.KeyCode.KeypadPlus then
-            IdealMouseOffsetY = IdealMouseOffsetY - 2
+            IdealMouseOffsetY = IdealMouseOffsetY - 1
         elseif input.KeyCode == Enum.KeyCode.KeypadMinus then
-            IdealMouseOffsetY = IdealMouseOffsetY + 2
+            IdealMouseOffsetY = IdealMouseOffsetY + 1
         elseif input.KeyCode == Enum.KeyCode.Minus then
-            IdealMouseOffsetX = IdealMouseOffsetX - 2
+            IdealMouseOffsetX = IdealMouseOffsetX - 1
         elseif input.KeyCode == Enum.KeyCode.Underscore then
-            IdealMouseOffsetX = IdealMouseOffsetX + 2
+            IdealMouseOffsetX = IdealMouseOffsetX + 1
         end
     end
 end)
@@ -51,25 +52,25 @@ end
 
 function CheckRayCollision(Rayresult,P1,P2)
     if Rayresult then
-        rPrint("Ray hit target: "..Rayresult.Instance)
+        rPrint("Ray hit target: "..Rayresult.Instance.Name)
     else
         return true
     end
 end
 
-function ChangeGuiColor(gui,color,time)
+function ChangeGuiColor(gui,color)
     if color == 'red' then
         local TS = game:GetService("TweenService")
-        TS:Create(gui,TweenInfo.new((time or 0.1),Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,0,0)}):Play()
+        TS:Create(gui,TweenInfo.new(0.5,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,0,0)}):Play()
     elseif color == 'white' then
         local TS = game:GetService("TweenService")
-        TS:Create(gui,TweenInfo.new((time or 0.1),Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,255,255)}):Play()
+        TS:Create(gui,TweenInfo.new(0.5,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,255,255)}):Play()
     end
 end
 
-function RotateGui(gui,Orientation,time)
+function RotateGui(gui,Orientation)
     local TS = game:GetService("TweenService")
-    TS:Create(gui,TweenInfo.new((time or 0.1),Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Rotation = Orientation}):Play()
+    TS:Create(gui,TweenInfo.new(0.2,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{Rotation = Orientation}):Play()
 end
 
 function ClearTable(tableName)
@@ -90,7 +91,7 @@ function ChangeFocusPlayerWallcheck(P1,P2)
     if CheckRayCollision(newRay,P1,P2) == true then
         table.insert(openPlayers,#openPlayers+1,game.Players:GetPlayerFromCharacter(P2.Parent))
     else
-        rPrint('\nError with checkraycollision')
+        rPrint('\nError with checkRayCollision')
     end
 end
 
@@ -134,20 +135,23 @@ function GetUUID()
 end
 
 function InsertGuis(ThemeNumber)
-    SendLocalMessage('Waiting for the game to load')
-    if dMode then
-        for i,v in pairs(game.Workspace:GetDescendants()) do
-            if v.Name == 'Head' and v:IsA('BasePart') then
-                SendLocalMessage('This game is supported!')
-                break
+    if not _G.Message then
+        _G.Message = true
+        SendLocalMessage('Waiting for the game to load')
+        if dMode then
+            for i,v in pairs(game.Workspace:GetDescendants()) do
+                if v.Name == 'Head' and v:IsA('BasePart') then
+                    SendLocalMessage('This game is supported!')
+                    break
+                end
             end
         end
+        repeat
+            wait()
+        until game:IsLoaded()
+        wait(ExtraDelay)
+        SendLocalMessage('Loaded')
     end
-    repeat
-        wait()
-    until game:IsLoaded()
-    wait(ExtraDelay)
-    SendLocalMessage('Loaded')
     if ThemeNumber == 1 then
         --Insert gui here
         Main = Instance.new("ScreenGui")
@@ -183,7 +187,6 @@ end
 --[[MAIN SCRIPT]]--
 
 _G.wallCheck = true
-_G.wallCheckOverride = false
 _G.GetFocusedPlayer = true
 _G.LastKnownDirection = {}
 --[[ local lowestMag
@@ -199,7 +202,7 @@ function GetClosest()
         for i,v in pairs(game.Players:GetPlayers()) do
             ChangeFocusPlayerWallcheck(game.Players.LocalPlayer.Character.Head,v.Character.Head)
             if CheckEntriesTable(openPlayers) > 0 then
-                print(CheckEntriesTable(openPlayers))
+                rPrint(CheckEntriesTable(openPlayers))
                 _G.FocusedPlayer = openPlayers[1]
             else
                 rPrint('\nError: openPlayers list it empty')
@@ -241,39 +244,25 @@ function GetClosest()
 end
 
 function Initialize()
-    InsertGuis(1)
-    repeat
-        wait()
-        GetClosest()
-        TransformMainGuiPosition()
-        --_G.GetFocusedPlayer = false --default: comment this line, used for debugging the function: GetClosest()
-    until _G.GetFocusedPlayer ~= true
-end
-
-function CheckHealth()
-    spawn(function()
-        pcall(function()
-            while wait() do
-                if (game.Players.LocalPlayer.Character.Humanoid.Health <= 0) or (game.Players.LocalPlayer.Character.HumanoidRootPart == nil) or (game.Players.LocalPlayer.Character == nil) then
-                   game:GetService("CoreGui")["RobloxLoadingGui"]:FindFirstChildWhichIsA("ScreenGui"):Destroy()
-                   _G.getFocusedPlayer = false
-                   if  game:GetService("CoreGui")["RobloxLoadingGui"]:FindFirstChildWhichIsA("ScreenGui") then
-                        rPrint('Failed to delete gui, retrying...')
-                        game:GetService("CoreGui")["RobloxLoadingGui"]:FindFirstChildWhichIsA("ScreenGui"):Destroy()
-                   end
-                   repeat wait() until game.Players.LocalPlayer.Character ~= nil
-                   if dMode == true then
-                       rPrint('LocalPlayer respawned')
-                   end
-                   wait(1)
-                   Initialize()
-                end
-            end
-        end)
+    pcall(function()
+        InsertGuis(1)
+        repeat
+            wait()
+            GetClosest()
+            TransformMainGuiPosition()
+            --_G.GetFocusedPlayer = false --default: comment this line, used for debugging the function: GetClosest()
+        until _G.GetFocusedPlayer ~= true
     end)
 end
-
 --[[START]]--
 
-CheckHealth()
+spawn(function()
+    while wait() do
+        if game.Players.LocalPlayer.Character.Humanoid.Health <= 0 then
+            wait(5)
+            Initialize()
+        end
+    end
+end)
+
 Initialize()
