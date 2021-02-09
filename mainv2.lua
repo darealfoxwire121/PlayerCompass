@@ -191,33 +191,13 @@ function CalculateDegrees(Point1,Point2)
         --check for enemy's lookvector
         --print(Point2.Orientation.Y-90 - realDegrees)
         --if wallcheck then visible == true else it is transparent
-        for i,v in pairs(game.Players:GetPlayers()) do
-            ChangeFocusPlayerWallcheck(Point1,v.Character.Head)
-            local newDegrees = math.atan2((Point1.Position.Z - _G.FocusedPlayer.Character.Head.Position.Z),(Point1.Position.X - _G.FocusedPlayer.Character.Head.Position.X))
-            local newRealDegrees = math.deg(newDegrees*-1)+180
-            local newDiff = (Point1.Orientation.Y - newRealDegrees)+90
-            if IsEnemyLookingAtPlayer(_G.FocusedPlayer.Character.Head.Orientation.Y-90,newRealDegrees) then
-                --enemy looking at player
-                RotateGui(Main2,newDiff)
-                ChangeGuiColor(Main2,'red')
-                return true
-            else
-                ChangeGuiColor(Main2,'white')
-            end
-        end
-        --[[ if _G.wallCheckOverride == false and IsEnemyLookingAtPlayer(Point2.Orientation.Y-90,realDegrees) then
-            if CheckGuiTransparent(Main2) then
-                AnimateTransparency(Main2,0)
-            end
+        if IsEnemyLookingAtPlayer(Point2.Orientation.Y-90,realDegrees) then
             Main2.Rotation = Diff+90
             Main2.BackgroundColor3 = Color3.fromRGB(255,0,0)
-        elseif _G.wallCheckOverride == false then
-            if CheckGuiTransparent(Main2) then
-                AnimateTransparency(Main2,0)
-            end
+        else
             Main2.Rotation = Diff+90
             Main2.BackgroundColor3 = Color3.fromRGB(255,255,255)
-        end ]]
+        end
         --[[ local tbl_main =
         {
             "Closest Player: ".._G.FocusedPlayer.Name..". Studs Away From Player: "..lowestMag..". Player Direction: "..CurrentDirection,
@@ -232,7 +212,7 @@ function GetClosest()
     local s,e = pcall(function()
         for i,v in pairs(game.Players:GetPlayers()) do
             --add player specific checks here--
-            if v.Name ~= game.Players.LocalPlayer.Name and _G.wallCheckOverride == false and _G.wallCheck == false then
+            if v.Name ~= game.Players.LocalPlayer.Name then
                 --team check enabled or 
                 if #game:GetService("Teams"):GetDescendants() > 0 then
                     if (v.Team ~= game.Players.LocalPlayer.Team) or (game.Players[v.Name]:FindFirstChild('team').Value ~= game.Players.LocalPlayer['team'].Value) then
@@ -322,5 +302,6 @@ end
 
 --[[START]]--
 
-Initialize()
 CheckHealth()
+Initialize()
+
