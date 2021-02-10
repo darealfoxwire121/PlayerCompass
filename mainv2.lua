@@ -20,16 +20,14 @@ local IdealMouseOffsetY = -45 -- same with this one
 
 --change ideal mouse offsets in-game
 game:GetService("UserInputService").InputBegan:Connect(function(input,nothing)
-    if nothing then
-        if input.KeyCode == Enum.KeyCode.KeypadPlus then
-            IdealMouseOffsetY = IdealMouseOffsetY - 1
-        elseif input.KeyCode == Enum.KeyCode.KeypadMinus then
-            IdealMouseOffsetY = IdealMouseOffsetY + 1
-        elseif input.KeyCode == Enum.KeyCode.Minus then
-            IdealMouseOffsetX = IdealMouseOffsetX - 1
-        elseif input.KeyCode == Enum.KeyCode.Underscore then
-            IdealMouseOffsetX = IdealMouseOffsetX + 1
-        end
+    if input.KeyCode == Enum.KeyCode.KeypadPlus then
+        IdealMouseOffsetY = IdealMouseOffsetY - 1
+    elseif input.KeyCode == Enum.KeyCode.KeypadMinus then
+        IdealMouseOffsetY = IdealMouseOffsetY + 1
+    elseif input.KeyCode == Enum.KeyCode.Minus then
+        IdealMouseOffsetX = IdealMouseOffsetX - 1
+    elseif input.KeyCode == Enum.KeyCode.Underscore then
+        IdealMouseOffsetX = IdealMouseOffsetX + 1
     end
 end)
 
