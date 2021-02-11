@@ -18,7 +18,7 @@ local UIGradient
 local IdealMouseOffsetX = -45 --keep it, should work on all types of screens, the games offest may differ though
 local IdealMouseOffsetY = -45 -- same with this one
 local openPlayers = {}
-local dMode = true --debug mode, Only possible on supported exploits
+local dMode = false --debug mode, Only possible on supported exploits
 _G.Message = false --default value if false
 local ExtraDelay = 0 --Please ignore this
 local Unsupported_Games = tostring(syn.request({Url = "https://raw.githubusercontent.com/darealfoxwire121/EnemyHUD/main/UnsupportedGames", Method = "GET"}).Body) or tostring(request({Url = "https://raw.githubusercontent.com/darealfoxwire121/EnemyHUD/main/UnsupportedGames", Method = "GET"}).Body)
@@ -117,6 +117,8 @@ function GetUUID()
     return game:GetService("HttpService"):GenerateGUID(false) or tostring(math.pi+math.random(0,math.huge))
 end
 
+local CheckGame = {}
+
 function InsertGuis(ThemeNumber)
     if not _G.Message then
         _G.Message = true
@@ -124,11 +126,13 @@ function InsertGuis(ThemeNumber)
         if dMode then
             for i,v in pairs(game.Workspace:GetDescendants()) do
                 if v.Name == 'Head' then
-                    game.Players.LocalPlayer:Kick("[EnemyHUD]: game is not supported (Also sorry for the kick, best way to send message)")
-                    _G.GetFocusedPlayer = false
-                    break
+                    table.insert(CheckGame,#CheckGame+1,v)
                 end
             end
+        end
+        if #CheckGame == 0 then
+            game.Players.LocalPlayer:Kick("[EnemyHUD]: game is not supported (Also sorry for the kick, best way to send message)")
+            _G.GetFocusedPlayer = false
         end
         repeat
             wait()
