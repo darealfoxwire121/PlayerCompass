@@ -9,8 +9,8 @@
     Made by foxwire121#5888(368756571481702401)         
 --]]
 
---TO DO--==========
---check ray collision
+--==NOTICE==--
+--only works on exploits with web request support
 
 local Main
 local Main2
@@ -18,30 +18,26 @@ local UIGradient
 local IdealMouseOffsetX = -45 --keep it, should work on all types of screens, the games offest may differ though
 local IdealMouseOffsetY = -45 -- same with this one
 local openPlayers = {}
-local dMode = false
-_G.Message = false
+local dMode = true --debug mode, Only possible on supported exploits
+_G.Message = false --default value if false
 local ExtraDelay = 0 --Please ignore this
+local Unsupported_Games = tostring(syn.request({Url = "https://raw.githubusercontent.com/darealfoxwire121/EnemyHUD/main/UnsupportedGames", Method = "GET"}).Body) or tostring(request({Url = "https://raw.githubusercontent.com/darealfoxwire121/EnemyHUD/main/UnsupportedGames", Method = "GET"}).Body)
 
-function rPrint(Message)
-    if dMode then
-        rconsoleprint(Message)
-    end
+function SendLocalMessage(Message,Duration)
+    game.StarterGui:SetCore("SendNotification",{
+        Title = "EnemyHUD",
+        Text = tostring(Message),
+        Duration = (Duration or 4)
+    })
 end
 
---change ideal mouse offsets in-game
-game:GetService("UserInputService").InputBegan:Connect(function(input,nothing)
-    if nothing then
-        if input.KeyCode == Enum.KeyCode.KeypadPlus then
-            IdealMouseOffsetY = IdealMouseOffsetY - 1
-        elseif input.KeyCode == Enum.KeyCode.KeypadMinus then
-            IdealMouseOffsetY = IdealMouseOffsetY + 1
-        elseif input.KeyCode == Enum.KeyCode.Minus then
-            IdealMouseOffsetX = IdealMouseOffsetX - 1
-        elseif input.KeyCode == Enum.KeyCode.Underscore then
-            IdealMouseOffsetX = IdealMouseOffsetX + 1
-        end
+function rPrint(Message)
+    if dMode and rconsoleprint ~= nil then
+        rconsoleprint(Message)
+    elseif dMode == true and rconsoleprint == nil then
+        game.Players.LocalPlayer:Kick("[EnemyHUD]: Exploit not supported (Also sorry for the kick, best way to send message)")
     end
-end)
+end
 
 function InsertRays(Point1,Point2)
     local raycastResult = workspace:Raycast(Point1.Position, Point2.Position)
@@ -51,7 +47,7 @@ function InsertRays(Point1,Point2)
 end
 
 function CheckRayCollision(Rayresult,P1,P2)
-    if Rayresult then
+    if Rayresult and not Rayresult.Instance:IsDescendantOf(P1.Parent) and not Rayresult.Instance:IsDescendantOf(P2.Parent) and Rayresult.Instance.Transparency ~= 1 then
         rPrint("Ray hit target: "..Rayresult.Instance.Name)
     else
         return true
@@ -61,16 +57,11 @@ end
 function ChangeGuiColor(gui,color)
     if color == 'red' then
         local TS = game:GetService("TweenService")
-        TS:Create(gui,TweenInfo.new(0.5,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,0,0)}):Play()
+        TS:Create(gui,TweenInfo.new(0.1,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor3 = Color3.new(255,0,0)}):Play()
     elseif color == 'white' then
         local TS = game:GetService("TweenService")
-        TS:Create(gui,TweenInfo.new(0.5,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor = Color3.new(255,255,255)}):Play()
+        TS:Create(gui,TweenInfo.new(0.1,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{BackgroundColor3 = Color3.new(255,255,255)}):Play()
     end
-end
-
-function RotateGui(gui,Orientation)
-    local TS = game:GetService("TweenService")
-    TS:Create(gui,TweenInfo.new(0.2,Enum.EasingStyle.Linear,Enum.EasingDirection.Out),{Rotation = Orientation}):Play()
 end
 
 function ClearTable(tableName)
@@ -111,14 +102,6 @@ function AnimateTransparency(gui,Transparency)
     until gui.BackgroundTransparency == Transparency
 end
 
-function SendLocalMessage(Message,Duration)
-    game.StarterGui:SetCore("SendNotification",{
-        Title = "EnemyHUD",
-        Text = tostring(Message),
-        Duration = (Duration or 4)
-    })
-end
-
 function IsEnemyLookingAtPlayer(EnemyRotation,MagnitudeAngle)
     --the red color thing
     if ((EnemyRotation - MagnitudeAngle) < 45 and (EnemyRotation - MagnitudeAngle) > -45) or (((EnemyRotation - MagnitudeAngle) > -370) and (EnemyRotation - MagnitudeAngle) < -320) then
@@ -140,8 +123,9 @@ function InsertGuis(ThemeNumber)
         SendLocalMessage('Waiting for the game to load')
         if dMode then
             for i,v in pairs(game.Workspace:GetDescendants()) do
-                if v.Name == 'Head' and v:IsA('BasePart') then
-                    SendLocalMessage('This game is supported!')
+                if v.Name == 'Head' then
+                    game.Players.LocalPlayer:Kick("[EnemyHUD]: game is not supported (Also sorry for the kick, best way to send message)")
+                    _G.GetFocusedPlayer = false
                     break
                 end
             end
@@ -186,9 +170,7 @@ end
 
 --[[MAIN SCRIPT]]--
 
-_G.wallCheck = true
 _G.GetFocusedPlayer = true
-_G.LastKnownDirection = {}
 --[[ local lowestMag
 local realmag
 local CurrentDirection = nil ]]
@@ -200,37 +182,80 @@ function GetClosest()
         end
         --[[Closest Player function was here]]
         for i,v in pairs(game.Players:GetPlayers()) do
-            ChangeFocusPlayerWallcheck(game.Players.LocalPlayer.Character.Head,v.Character.Head)
-            if CheckEntriesTable(openPlayers) > 0 then
-                rPrint(CheckEntriesTable(openPlayers))
-                _G.FocusedPlayer = openPlayers[1]
-            else
-                rPrint('\nError: openPlayers list it empty')
-                break
-            end
-            if _G.FocusedPlayer == nil and CheckGuiTransparent(Main2) == false then
-                --set gui invisible
-                AnimateTransparency(Main2,1)
-            else
-                rPrint('Name of current target: '.._G.FocusedPlayer.Name)
-                --set gui visible
-                AnimateTransparency(Main2,0)
-            end
-            local newDegrees = math.atan2((game.Players.LocalPlayer.Character.Head.Position.Z - _G.FocusedPlayer.Character.Head.Position.Z),(game.Players.LocalPlayer.Character.Head.Position.X - _G.FocusedPlayer.Character.Head.Position.X))
-            local newRealDegrees = math.deg(newDegrees*-1)+180
-            local newDiff = (game.Players.LocalPlayer.Character.Head.Orientation.Y - newRealDegrees)+90
-            if IsEnemyLookingAtPlayer(_G.FocusedPlayer.Character.Head.Orientation.Y-90,newRealDegrees) then
-                --enemy looking at player
-                RotateGui(Main2,newDiff)
-                ChangeGuiColor(Main2,'red')
-            else
-                RotateGui(Main2,newDiff)
-                ChangeGuiColor(Main2,'white')
+            if v.Name ~= game.Players.LocalPlayer.Name then
+                if (v.Team ~= game.Players.LocalPlayer.Team) and not string.find(Unsupported_Games,game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) then
+                    ChangeFocusPlayerWallcheck(game.Players.LocalPlayer.Character.Head,v.Character.Head)
+                    if CheckEntriesTable(openPlayers) > 0 then
+                        rPrint(CheckEntriesTable(openPlayers))
+                        _G.FocusedPlayer = openPlayers[1]
+                    else
+                        rPrint('\nError: openPlayers list it empty')
+                        _G.GetFocusedPlayer = false
+                        break
+                    end
+                    if _G.FocusedPlayer == nil and CheckGuiTransparent(Main2) == false then
+                        --set gui invisible
+                        AnimateTransparency(Main2,1)
+                    else
+                        rPrint('Name of current target: '.._G.FocusedPlayer.Name)
+                        --set gui visible
+                        if CheckGuiTransparent(Main2) == true then
+                            AnimateTransparency(Main2,0)
+                        end
+                        local newDegrees = math.atan2((game.Players.LocalPlayer.Character.Head.Position.Z - _G.FocusedPlayer.Character.Head.Position.Z),(game.Players.LocalPlayer.Character.Head.Position.X - _G.FocusedPlayer.Character.Head.Position.X))
+                        rPrint("\n"..newDegrees)
+                        local newRealDegrees = math.deg(newDegrees*-1)+180
+                        rPrint("\n"..newRealDegrees)
+                        local newDiff = (game.Players.LocalPlayer.Character.Head.Orientation.Y - newRealDegrees)+90
+                        rPrint("\n"..newDiff)
+                        if IsEnemyLookingAtPlayer(_G.FocusedPlayer.Character.Head.Orientation.Y-90,newRealDegrees) then
+                            Main2.Rotation = newDiff
+                            ChangeGuiColor(Main2,'red')
+                        else
+                            Main2.Rotation = newDiff
+                            ChangeGuiColor(Main2,'white')
+                        end
+                    end
+                elseif not string.find(Unsupported_Games,game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name) then
+                    ChangeFocusPlayerWallcheck(game.Players.LocalPlayer.Character.Head,v.Character.Head)
+                    if CheckEntriesTable(openPlayers) > 0 then
+                        rPrint(CheckEntriesTable(openPlayers))
+                        _G.FocusedPlayer = openPlayers[1]
+                    else
+                        rPrint('\nError: openPlayers list it empty')
+                        _G.GetFocusedPlayer = false
+                        break
+                    end
+                    if _G.FocusedPlayer == nil and CheckGuiTransparent(Main2) == false then
+                        --set gui invisible
+                        AnimateTransparency(Main2,1)
+                    else
+                        rPrint('Name of current target: '.._G.FocusedPlayer.Name)
+                        --set gui visible
+                        if CheckGuiTransparent(Main2) == true then
+                            AnimateTransparency(Main2,0)
+                        end
+                        local newDegrees = math.atan2((game.Players.LocalPlayer.Character.Head.Position.Z - _G.FocusedPlayer.Character.Head.Position.Z),(game.Players.LocalPlayer.Character.Head.Position.X - _G.FocusedPlayer.Character.Head.Position.X))
+                        rPrint("\n"..newDegrees)
+                        local newRealDegrees = math.deg(newDegrees*-1)+180
+                        rPrint("\n"..newRealDegrees)
+                        local newDiff = (game.Players.LocalPlayer.Character.Head.Orientation.Y - newRealDegrees)+90
+                        rPrint("\n"..newDiff)
+                        if IsEnemyLookingAtPlayer(_G.FocusedPlayer.Character.Head.Orientation.Y-90,newRealDegrees) then
+                            Main2.Rotation = newDiff
+                            ChangeGuiColor(Main2,'red')
+                        else
+                            Main2.Rotation = newDiff
+                            ChangeGuiColor(Main2,'white')
+                        end
+                    end
+                else
+                    game.Players.LocalPlayer:Kick("[EnemyHUD]: "..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name.." is not supported yet")
+                end
             end
         end
         --print('lowest mag: '..lowestMag)
         --print('Closest Player:'.._G.FocusedPlayer.Name)
-        --check if player isnt nil
         --[[ if _G.FocusedPlayer then
             CalculateDegrees(game.Players.LocalPlayer.Character.Head, _G.FocusedPlayer.Character.Head)
         else
@@ -250,18 +275,25 @@ function Initialize()
             wait()
             GetClosest()
             TransformMainGuiPosition()
-            --_G.GetFocusedPlayer = false --default: comment this line, used for debugging the function: GetClosest()
+            --_G.GetFocusedPlayer = false
         until _G.GetFocusedPlayer ~= true
     end)
 end
+
 --[[START]]--
 
-spawn(function()
-    while wait() do
-        if game.Players.LocalPlayer.Character.Humanoid.Health <= 0 then
-            wait(5)
-            Initialize()
-        end
+--change ideal mouse offsets in-game
+game:GetService("UserInputService").InputBegan:Connect(function(input,nothing)
+    if input.KeyCode == Enum.KeyCode.KeypadPlus then
+        IdealMouseOffsetY = IdealMouseOffsetY - 1
+    elseif input.KeyCode == Enum.KeyCode.KeypadMinus then
+        IdealMouseOffsetY = IdealMouseOffsetY + 1
+    elseif input.KeyCode == Enum.KeyCode.Minus then
+        IdealMouseOffsetX = IdealMouseOffsetX - 1
+    elseif input.KeyCode == Enum.KeyCode.Underscore then
+        IdealMouseOffsetX = IdealMouseOffsetX + 1
+    elseif input.KeyCode == Enum.KeyCode.F5 then
+        Initialize()
     end
 end)
 
