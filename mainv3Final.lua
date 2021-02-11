@@ -129,10 +129,10 @@ function InsertGuis(ThemeNumber)
                     table.insert(CheckGame,#CheckGame+1,v)
                 end
             end
-        end
-        if #CheckGame == 0 then
-            game.Players.LocalPlayer:Kick("[EnemyHUD]: game is not supported (Also sorry for the kick, best way to send message)")
-            _G.GetFocusedPlayer = false
+            if #CheckGame == 0 then
+                game.Players.LocalPlayer:Kick("[EnemyHUD]: game is not supported (Also sorry for the kick, best way to send message)")
+                _G.GetFocusedPlayer = false
+            end
         end
         repeat
             wait()
